@@ -51,7 +51,11 @@ func (u UserController) Register(c *gin.Context) {
 		Address  string `validate:"required"`
 	}
 
-	registerValidation := &RegisterValidation{Name: request.Name, Email: request.Email, Password: request.Password, Age: request.Age, Address: request.Address}
+	registerValidation := &RegisterValidation{
+		Name: request.Name, 
+		Email: request.Email, 
+		Password: request.Password, 
+		Age: request.Age, Address: request.Address}
 
 	err := validator.New().Struct(registerValidation)
 	if err != nil {
