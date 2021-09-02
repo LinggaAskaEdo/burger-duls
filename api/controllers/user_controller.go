@@ -27,7 +27,7 @@ func NewUserController(userService services.UserService, logger lib.Logger) User
 	}
 }
 
-// Logout user
+// Register user
 func (u UserController) Register(c *gin.Context) {
 	u.logger.Info("Register route called")
 
@@ -44,7 +44,7 @@ func (u UserController) Register(c *gin.Context) {
 	}
 
 	type RegisterValidation struct {
-		Name     string `validate:"required,min=5,max=50"`
+		Name     string `validate:"required,min=3,max=30"`
 		Email    string `validate:"required,email"`
 		Password string `validate:"required,min=5"`
 		Age      uint8  `validate:"required,min=17,max=45"`
@@ -52,10 +52,10 @@ func (u UserController) Register(c *gin.Context) {
 	}
 
 	registerValidation := &RegisterValidation{
-		Name: request.Name, 
-		Email: request.Email, 
-		Password: request.Password, 
-		Age: request.Age, Address: request.Address}
+		Name:     request.Name,
+		Email:    request.Email,
+		Password: request.Password,
+		Age:      request.Age, Address: request.Address}
 
 	err := validator.New().Struct(registerValidation)
 	if err != nil {
@@ -84,4 +84,50 @@ func (u UserController) Register(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"user": result})
+}
+
+// Login user
+func (u UserController) Login(c *gin.Context) {
+	u.logger.Info("Login route called")
+
+	request := dto.Request{}
+
+	if err := c.ShouldBindJSON(&request); err != nil {
+		u.logger.Error(err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"status": http.StatusInternalServerError,
+			"error":  err.Error(),
+		})
+		return
+	}
+
+	type LoginValidation struct {
+		Email    string `validate:"required,email"`
+		Password string `validate:"required,min=5"`
+	}
+
+	loginValidation := &LoginValidation{
+		Email:    request.Email,
+		Password: request.Password}
+
+	err := validator.New().Struct(loginValidation)
+	if err != nil {
+		u.logger.Error(err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": http.StatusBadRequest,
+			"error":  err.Error()})
+		return
+	}
+
+	user, err := u.service.GetUserByEmailAndPassword(request.Email, request.Password)
+	if err != nil {
+		u.logger.Error(err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"status": http.StatusInternalServerError,
+			"error":  err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"user": user})
 }

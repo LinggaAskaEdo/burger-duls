@@ -47,7 +47,7 @@ func NewDatabase(env Env, zapLogger Logger) Database {
 
 	zapLogger.Info("Database connection established")
 
-	db.AutoMigrate(&entity.User{})
+	db.AutoMigrate(&entity.User{}, &entity.Menu{})
 
 	zapLogger.Info("Table(s) migration was successful")
 

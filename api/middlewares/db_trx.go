@@ -64,6 +64,7 @@ func (m DatabaseTrx) Setup() {
 		// commit transaction on success status
 		if statusInList(c.Writer.Status(), []int{http.StatusOK, http.StatusCreated}) {
 			m.logger.Info("committing transactions")
+
 			if err := txHandle.Commit().Error; err != nil {
 				m.logger.Error("trx commit error: ", err)
 			}

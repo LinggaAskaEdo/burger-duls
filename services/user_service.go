@@ -29,5 +29,9 @@ func (s UserService) WithTrx(trxHandle *gorm.DB) UserService {
 
 // CreateUser call to create the user
 func (s UserService) CreateUser(user entity.User) (result entity.User, err error) {
-	return result, s.repository.Create(&user).Error
+	return user, s.repository.Create(&user).Error
+}
+
+func (s UserService) GetUserByEmailAndPassword(email string, password string) (user entity.User, err error) {
+	return user, s.repository.First(&user, "email = ? AND password = ?", email, password).Error
 }

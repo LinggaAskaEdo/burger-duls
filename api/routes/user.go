@@ -15,9 +15,10 @@ type UserRoutes struct {
 // Setup user routes
 func (s UserRoutes) Setup() {
 	s.logger.Info("Setting up routes")
-	api := s.handler.Gin.Group("/burger-duls")
+	api := s.handler.Gin.Group("/burger-duls/user")
 	{
 		api.POST("/register", s.userController.Register)
+		api.POST("/login", s.userController.Login)
 		// api.GET("/user/:id", s.userController.GetOneUser)
 		// api.GET("/user", s.userController.GetUser)
 		// api.POST("/user", s.userController.SaveUser)
