@@ -34,6 +34,15 @@ func (m MenuController) AddMenu(c *gin.Context) {
 	request := dto.Request{}
 	trxHandle := c.MustGet(constants.DBTransaction).(*gorm.DB)
 
+	if err := c.ShouldBindJSON(&request); err != nil {
+		m.logger.Error(err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"status": http.StatusInternalServerError,
+			"error":  err.Error(),
+		})
+		return
+	}
+
 	type AddMenuValidation struct {
 		Name        string `validate:"required,min=3,max=50"`
 		Description string `validate:"required"`

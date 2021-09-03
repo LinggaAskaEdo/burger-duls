@@ -22,17 +22,17 @@ func NewMenuService(logger lib.Logger, repository repository.MenuRepository) Men
 }
 
 // WithTrx delegates transaction to repository database
-func (s MenuService) WithTrx(trxHandle *gorm.DB) MenuService {
-	s.repository = s.repository.WithTrx(trxHandle)
-	return s
+func (m MenuService) WithTrx(trxHandle *gorm.DB) MenuService {
+	m.repository = m.repository.WithTrx(trxHandle)
+	return m
 }
 
 // AddMenu call to add the menu
-func (s MenuService) AddMenu(menu entity.Menu) (result entity.Menu, err error) {
-	return menu, s.repository.Create(&menu).Error
+func (m MenuService) AddMenu(menu entity.Menu) (result entity.Menu, err error) {
+	return menu, m.repository.Create(&menu).Error
 }
 
 // GetAllMenu call to get all menu
-func (s MenuService) GetAllMenu() (menus []entity.Menu, err error) {
-	return menus, s.repository.Find(&menus).Error
+func (m MenuService) GetAllMenu() (menus []entity.Menu, err error) {
+	return menus, m.repository.Find(&menus).Error
 }

@@ -13,12 +13,12 @@ type MenuRoutes struct {
 }
 
 // Setup menu routes
-func (s MenuRoutes) Setup() {
-	s.logger.Info("Setting up routes")
-	api := s.handler.Gin.Group("/burger-duls/menu")
+func (m MenuRoutes) Setup() {
+	m.logger.Info("Setting up routes")
+	api := m.handler.Gin.Group("/burger-duls/menu")
 	{
-		api.POST("/add", s.menuController.AddMenu)
-		api.GET("/all", s.menuController.AllMenu)
+		api.POST("/add", m.menuController.AddMenu)
+		api.GET("/all", m.menuController.AllMenu)
 	}
 }
 

@@ -55,7 +55,8 @@ func (u UserController) Register(c *gin.Context) {
 		Name:     request.Name,
 		Email:    request.Email,
 		Password: request.Password,
-		Age:      request.Age, Address: request.Address}
+		Age:      request.Age,
+		Address:  request.Address}
 
 	err := validator.New().Struct(registerValidation)
 	if err != nil {
