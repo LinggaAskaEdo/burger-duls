@@ -32,5 +32,5 @@ artifacts:
 # [END cloudbuild_go_logs_yaml]
 # Store images in Google Artifact Registry
 images:
-  - gcr.io/burgerduls/burger-duls/burger-duls:$SHORT_SHA
+  - gcr.io/burgerduls/burger-duls
 # [END cloudbuild_go_yaml]
