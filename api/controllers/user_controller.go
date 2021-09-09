@@ -5,33 +5,46 @@ import (
 
 	"github.com/LinggaAskaEdo/burger-duls/constants"
 	"github.com/LinggaAskaEdo/burger-duls/lib"
-	dto "github.com/LinggaAskaEdo/burger-duls/models/dto"
 	entity "github.com/LinggaAskaEdo/burger-duls/models/entity"
 	"github.com/LinggaAskaEdo/burger-duls/services"
 	"github.com/gin-gonic/gin"
-	"gopkg.in/go-playground/validator.v9"
 	"gorm.io/gorm"
 )
 
 // UserController data type
 type UserController struct {
-	service services.UserService
-	logger  lib.Logger
+	service   services.UserService
+	logger    lib.Logger
+	validator lib.Validator
 }
 
 // NewUserController creates new user controller
-func NewUserController(userService services.UserService, logger lib.Logger) UserController {
+func NewUserController(userService services.UserService, logger lib.Logger, validator lib.Validator) UserController {
 	return UserController{
-		service: userService,
-		logger:  logger,
+		service:   userService,
+		logger:    logger,
+		validator: validator,
 	}
+}
+
+type RegisterValidation struct {
+	Name     string `json:"name" validate:"required,min=3,max=30"`
+	Email    string `json:"email" validate:"required,email"`
+	Password string `json:"password" validate:"required,min=5"`
+	Age      uint8  `json:"age" validate:"required,min=17,max=45"`
+	Address  string `json:"address" validate:"required"`
+}
+
+type LoginValidation struct {
+	Email    string `json:"email" validate:"required,email"`
+	Password string `json:"password" validate:"required,min=5"`
 }
 
 // Register user
 func (u UserController) Register(c *gin.Context) {
 	u.logger.Info("Register route called")
 
-	request := dto.Request{}
+	request := RegisterValidation{}
 	trxHandle := c.MustGet(constants.DBTransaction).(*gorm.DB)
 
 	if err := c.ShouldBindJSON(&request); err != nil {
@@ -43,22 +56,7 @@ func (u UserController) Register(c *gin.Context) {
 		return
 	}
 
-	type RegisterValidation struct {
-		Name     string `validate:"required,min=3,max=30"`
-		Email    string `validate:"required,email"`
-		Password string `validate:"required,min=5"`
-		Age      uint8  `validate:"required,min=17,max=45"`
-		Address  string `validate:"required"`
-	}
-
-	registerValidation := &RegisterValidation{
-		Name:     request.Name,
-		Email:    request.Email,
-		Password: request.Password,
-		Age:      request.Age,
-		Address:  request.Address}
-
-	err := validator.New().Struct(registerValidation)
+	err := u.validator.Struct(request)
 	if err != nil {
 		u.logger.Error(err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -91,7 +89,7 @@ func (u UserController) Register(c *gin.Context) {
 func (u UserController) Login(c *gin.Context) {
 	u.logger.Info("Login route called")
 
-	request := dto.Request{}
+	request := LoginValidation{}
 
 	if err := c.ShouldBindJSON(&request); err != nil {
 		u.logger.Error(err)
@@ -102,16 +100,7 @@ func (u UserController) Login(c *gin.Context) {
 		return
 	}
 
-	type LoginValidation struct {
-		Email    string `validate:"required,email"`
-		Password string `validate:"required,min=5"`
-	}
-
-	loginValidation := &LoginValidation{
-		Email:    request.Email,
-		Password: request.Password}
-
-	err := validator.New().Struct(loginValidation)
+	err := u.validator.Struct(request)
 	if err != nil {
 		u.logger.Error(err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{
