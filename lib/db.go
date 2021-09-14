@@ -18,12 +18,12 @@ type Database struct {
 }
 
 // NewDatabase creates a new database instance
-func NewDatabase(env Env, zapLogger Logger) Database {
-	username := env.DBUsername
-	password := env.DBPassword
-	host := env.DBHost
-	port := env.DBPort
-	dbname := env.DBName
+func NewDatabase(zapLogger Logger) Database {
+	username := os.Getenv("MARIA_DB_USER")
+	password := os.Getenv("MARIA_DB_PASS")
+	host := os.Getenv("MARIA_DB_HOST")
+	port := os.Getenv("MARIA_DB_PORT")
+	dbname := os.Getenv("BURGER_DULS_DB_NAME")
 
 	url := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", username, password, host, port, dbname)
 

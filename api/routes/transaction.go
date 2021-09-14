@@ -18,6 +18,9 @@ func (t TransactionRoutes) Setup() {
 	api := t.handler.Gin.Group("/burger-duls/order")
 	{
 		api.POST("/add", t.transactionController.Order)
+		api.GET("/get", t.transactionController.AllTransaction)
+		api.GET("/get/:id", t.transactionController.TransactionByUserId)
+		api.POST("/invoice", t.transactionController.Invoice)
 	}
 }
 

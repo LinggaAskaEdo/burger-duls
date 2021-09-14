@@ -25,6 +25,7 @@ func (r TransactionRepository) WithTrx(trxHandle *gorm.DB) TransactionRepository
 		r.logger.Error("Transaction Database not found in gin context. ")
 		return r
 	}
+
 	r.Database.DB = trxHandle
 	return r
 }

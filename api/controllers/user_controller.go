@@ -33,6 +33,7 @@ type RegisterValidation struct {
 	Password string `json:"password" validate:"required,min=5"`
 	Age      uint8  `json:"age" validate:"required,min=17,max=45"`
 	Address  string `json:"address" validate:"required"`
+	Phone    string `json:"phone" validate:"required"`
 }
 
 type LoginValidation struct {
@@ -70,7 +71,8 @@ func (u UserController) Register(c *gin.Context) {
 		Email:    request.Email,
 		Password: request.Password,
 		Age:      request.Age,
-		Address:  request.Address}
+		Address:  request.Address,
+		Phone:    request.Phone}
 
 	result, err := u.service.WithTrx(trxHandle).CreateUser(user)
 	if err != nil {

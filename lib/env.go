@@ -8,18 +8,16 @@ import (
 
 // Env has environment stored
 type Env struct {
-	ServerPort    string `mapstructure:"SERVER_PORT"`
-	Environment   string `mapstructure:"ENV"`
-	LogOutput     string `mapstructure:"LOG_OUTPUT"`
-	DBUsername    string `mapstructure:"DB_USER"`
-	DBPassword    string `mapstructure:"DB_PASS"`
-	DBHost        string `mapstructure:"DB_HOST"`
-	DBPort        string `mapstructure:"DB_PORT"`
-	DBName        string `mapstructure:"DB_NAME"`
-	DBMaxOpenConn int    `mapstructure:"DB_MAX_OPEN_CONN"`
-	DBMaxIdleConn int    `mapstructure:"DB_MAX_IDLE_CONN"`
-	DBMaxLifeTime int    `mapstructure:"DB_MAX_LIFE_TIME"`
-	DBMaxIdleTime int    `mapstructure:"DB_MAX_IDLE_TIME"`
+	ServerPort      string `mapstructure:"SERVER_PORT"`
+	Environment     string `mapstructure:"ENV"`
+	LogOutput       string `mapstructure:"LOG_OUTPUT"`
+	DBMaxOpenConn   int    `mapstructure:"DB_MAX_OPEN_CONN"`
+	DBMaxIdleConn   int    `mapstructure:"DB_MAX_IDLE_CONN"`
+	DBMaxLifeTime   int    `mapstructure:"DB_MAX_LIFE_TIME"`
+	DBMaxIdleTime   int    `mapstructure:"DB_MAX_IDLE_TIME"`
+	URLCloudStorage string `mapstructure:"URL_CLOUD_STORAGE"`
+	ProjectId       string `mapstructure:"PROJECT_ID"`
+	BucketName      string `mapstructure:"BUCKET_NAME"`
 }
 
 // NewEnv creates a new environment

@@ -12,6 +12,7 @@ type User struct {
 	Password string `gorm:"NOT NULL"`
 	Age      uint8  `gorm:"NOT NULL"`
 	Address  string `gorm:"NOT NULL"`
+	Phone    string `gorm:"NOT NULL"`
 }
 
 // TableName gives table name of model

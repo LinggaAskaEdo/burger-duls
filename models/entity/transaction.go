@@ -8,6 +8,7 @@ type Transaction struct {
 	TransactionNumber string `gorm:"NOT NULL"`
 	UserID            uint
 	User              User
+	Invoice           string
 	Confirm           bool `gorm:"NOT NULL"`
 }
 
